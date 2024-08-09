@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Found Items</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    
+
+    <main>
+        <h1>Found Items</h1>
+
+        {% if found_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Item Description</th>
+                    <th>Owner Name</th>
+                    <th>Owner Number</th>
+                    <th>Found Date</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in found_items %}
+                <tr>
+                    <td>{{ item.item_name }}</td>
+                    <td>{{ item.item_desc }}</td>
+                    <td>{{ item.owner_name }}</td>
+                    <td>{{ item.owner_number }}</td>
+                    <td>{{ item.found_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ item.location }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No found items available.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Lost and Found. All rights reserved.</p>
+    </footer>
+</body>
+</html>

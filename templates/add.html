@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" >
+</head>
+<body>
+    <h1>Add New Item</h1>
+    <form action="" method="POST">
+      <section class="lost-form">
+        <h2>Report a Lost Item</h2>
+        
+          <div class="form-group">
+            <label for="item-details">Item Details</label>
+            <input type="text" id="item-details" name="item_name" placeholder="Describe the lost item" /> <!-- Updated -->
+          </div>
+          <div class="form-group">
+            <label for="item-details">Item Details</label>
+            <input type="text" id="item-details" name="item_desc" placeholder="Describe the lost item" /> <!-- Updated -->
+          </div>
+    
+         
+    
+          <div class="form-group">
+            <label for="owner-name">Owner's Name</label>
+            <input type="text" id="owner-name" name="owner_name" placeholder="Your Name" /> <!-- Updated -->
+          </div>
+    
+          <div class="form-group">
+            <label for="owner-phone">Owner's Phone Number</label>
+            <input type="tel" id="owner-phone" name="owner_number" placeholder="Your Phone Number" /> <!-- Updated -->
+          </div>
+    
+          <div class="form-group">
+            <label for="lost-date">Lost Date</label>
+            <input type="date" id="lost-date" name="lostDate" /> <!-- No equivalent in Code 1 -->
+          </div>
+    
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" placeholder="Where did you lose the item?" /> <!-- No change -->
+          </div>
+    
+          <button type="submit">Submit</button>
+       
+    </section>
+    </form>
+    <a href="{{ url_for('index') }}">Back to List</a>
+</body>
+</html>

@@ -1,66 +1,103 @@
-from flask import Flask , render_template ,request,redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-
-from datetime import datetime , timezone
+from datetime import datetime, timezone
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///LostDb.db"
 db = SQLAlchemy(app)
+
+
 class User(db.Model):
-    id = db.Column(db.Integer , primary_key = True)
-    Item_name = db.Column(db.Integer , primary_key = True)
-    Item_desc = db.Column(db.String(20), nullable = False)
-    Owner_name = db.Column(db.String(20), nullable = False)
-    Owner_number = db.Column(db.Integer, nullable = False)
-    
+    id = db.Column(db.Integer, primary_key=True)
+    item_name = db.Column(db.String(50), nullable=False)  # Fixed type to String
+    item_desc = db.Column(db.String(100), nullable=False)  # Increased length
+    owner_name = db.Column(db.String(50), nullable=False)
+    owner_number = db.Column(db.String(15), nullable=False)  # String for phone numbers
+    lost_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    location = db.Column(db.String(50), nullable=False)
 
-    Lost_date = db.Column(db.DateTime , default = lambda: datetime.now(timezone.utc))
-    Location =  db.Column(db.String(20), nullable = False)
-    
     def __repr__(self) -> str:
-        return f"{self.Name} - {self.Pass}"
-    
-    
-    
-    
-# @app.route('/' ,methods=['Get','Post'])
-# def home():
-#     if request.method=="POST":
-#         name = request.form['mail']
-#         pas = request.form['pass']
-       
-#         obj = User(Name=name , Pass =pas, ePass=ep)
-#         db.session.add(obj)
-#         db.session.commit()
-#     users = User.query.all()
-#     return render_template('index.html' , all_users = users )
-#     # return 'hello word'
-    
-# @app.route('/delete/<int:id>')
-# def delete(id):
-#     user = User.query.filter_by(id = id).first()
-#     db.session.delete(user)
-#     db.session.commit()
-#     return redirect("/")
+        return f"{self.owner_name} - {self.item_name}"
 
 
-# @app.route('/update/<int:id>', methods=["Get","Post"])
-# def update(id):
-#     if request.method=="POST":
-#         mail=request.form['mail']
-#         pa=request.form['pass']
-#         user = User.query.filter_by(id = id).first()
-#         user.Name = mail
-#         user.Pass = pa
-#         db.session.add(user)
-#         db.session.commit()
-#         return redirect("/")
+@app.route("/")
+def index():
+    users = User.query.all()
+    return render_template("index.html", users=users)
+
+
+
+
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    if request.method == "POST":
+        item_name = request.form.get("item_name")
+        item_desc = request.form.get("item_desc")
+        owner_name = request.form.get("owner_name")
+        owner_number = request.form.get("owner_number")
+        location = request.form.get("location")
+
+        new_user = User(
+            item_name=item_name,
+            item_desc=item_desc,
+            owner_name=owner_name,
+            owner_number=owner_number,
+            location=location
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for("index"))
     
+    return render_template("add.html")
+
+
+@app.route("/list")
+def list_items():
+    users = User.query.all()
+    return render_template("list.html", users=users)
+
+@app.route("/update/<int:id>", methods=["GET", "POST"])
+def update(id):
+    user = User.query.get_or_404(id)
+    if request.method == "POST":
+        user.item_name = request.form.get("item_name")
+        user.item_desc = request.form.get("item_desc")
+        user.owner_name = request.form.get("owner_name")
+        user.owner_number = request.form.get("owner_number")
+        user.location = request.form.get("location")
+
+        db.session.commit()
+        return redirect(url_for("index"))
     
-#     user = User.query.filter_by(id = id).first()
-#     return render_template('update.html' , all_users = user )
-    
+    return render_template("add.html", user=user)
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for("index"))
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    query = request.args.get("query", "")
+    users = User.query.filter(
+        (User.item_name.ilike(f"%{query}%")) |
+        (User.item_desc.ilike(f"%{query}%")) |
+        (User.owner_name.ilike(f"%{query}%")) |
+        (User.location.ilike(f"%{query}%"))
+    ).all()
+    return render_template("search.html", users=users, query=query)
+
+
+
+
 if __name__ == "__main__":
+ # In your Flask app
     with app.app_context():
-        db.create_all()
+        # Drop the old table
+         db.create_all()
+        # Create all tables with the new schema
+     
+
     app.run(debug=True)
