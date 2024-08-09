@@ -4,15 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Found Items</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Main Content Styles */
+        main {
+            padding: 20px;
+            background-color: #ffffff;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #0056b3;
+            color: white;
+            padding: 1.5em 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+        
+        nav {
+            margin-top: 1em;
+        }
+        
+        nav a {
+            color: white;
+            margin: 0 1em;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease-in-out;
+        }
+        
+        nav a:hover {
+            color: #ffdd57;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    
-
+    <header>
+        <h1>Lost and Found</h1>
+        <nav>
+           
+            <a href="/add">Lost</a>
+            <a href="/search">Found</a>
+            <a href="/list">List of Items</a>
+       
+        </nav>
+    </header>
     <main>
-        <h1>Found Items</h1>
-
-        {% if found_items %}
+        <h1>List of Found Items</h1>
         <table>
             <thead>
                 <tr>
@@ -21,6 +114,7 @@
                     <th>Owner Name</th>
                     <th>Owner Number</th>
                     <th>Found Date</th>
+                    <th>Lost Date</th>
                     <th>Location</th>
                 </tr>
             </thead>
@@ -32,14 +126,12 @@
                     <td>{{ item.owner_name }}</td>
                     <td>{{ item.owner_number }}</td>
                     <td>{{ item.found_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ item.lost_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td>{{ item.location }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        {% else %}
-        <p>No found items available.</p>
-        {% endif %}
     </main>
 
     <footer>

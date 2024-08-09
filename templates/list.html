@@ -24,24 +24,33 @@ main {
 
 /* Header Styles */
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 15px;
+    background-color: #0056b3;
+    color: white;
+    padding: 1.5em 0;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
     margin: 0;
+    font-size: 2.5em;
+    letter-spacing: 1px;
+}
+
+nav {
+    margin-top: 1em;
 }
 
 nav a {
-    color: #fff;
+    color: white;
+    margin: 0 1em;
     text-decoration: none;
-    padding: 0 10px;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    color: #ffdd57;
 }
 
 /* Table Styles */
@@ -86,8 +95,16 @@ footer {
 </style>
 </head>
 <body>
-   
-
+    <header>
+        <h1>Lost and Found</h1>
+        <nav>
+           
+            <a href="/add">Lost</a>
+            <a href="/search">Found</a>
+            <a href="/list">List of Items</a>
+       
+        </nav>
+    </header>
     <main>
         <h1>List of All Items</h1>
         <table>
@@ -113,7 +130,9 @@ footer {
                     <td>{{ user.location }}</td>
                     <td>
                       
-                        <a href="#" onclick="return confirm('Are you sure you want to mark  this item As found?');">Found</a>
+                        <a href="{{ url_for('mark_as_found', id=user.id) }}" onclick="return confirm('Are you sure you want to mark this item as found?');">Found</a>
+
+
                     </td>
                 </tr>
                 {% endfor %}

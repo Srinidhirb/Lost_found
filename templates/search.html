@@ -15,24 +15,33 @@ body {
 
 /* Header Styles */
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 15px;
+    background-color: #0056b3;
+    color: white;
+    padding: 1.5em 0;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
     margin: 0;
+    font-size: 2.5em;
+    letter-spacing: 1px;
+}
+
+nav {
+    margin-top: 1em;
 }
 
 nav a {
-    color: #fff;
+    color: white;
+    margin: 0 1em;
     text-decoration: none;
-    padding: 0 10px;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    color: #ffdd57;
 }
 
 /* Main Content Styles */
@@ -116,7 +125,16 @@ footer {
    </style>
 </head>
 <body>
-   
+    <header>
+        <h1>Lost and Found</h1>
+        <nav>
+           
+            <a href="/add">Lost</a>
+            <a href="/search">Found</a>
+            <a href="/list">List of Items</a>
+       
+        </nav>
+    </header>
 
     <main>
         <h1>Search Results</h1>
@@ -136,7 +154,7 @@ footer {
                     <th>Owner Number</th>
                     <th>Lost Date</th>
                     <th>Location</th>
-                    <th>Actions</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -148,10 +166,7 @@ footer {
                     <td>{{ user.owner_number }}</td>
                     <td>{{ user.lost_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td>{{ user.location }}</td>
-                    <td>
-                        
-                        <a href="{{ url_for('delete', id=user.id) }}" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
-                    </td>
+                    
                     
                 </tr>
                 {% endfor %}

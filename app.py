@@ -19,7 +19,18 @@ class User(db.Model):
     def __repr__(self) -> str:
         return f"{self.owner_name} - {self.item_name}"
 
+class FoundItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    item_name = db.Column(db.String(50), nullable=False)
+    item_desc = db.Column(db.String(100), nullable=False)
+    owner_name = db.Column(db.String(50), nullable=False)
+    owner_number = db.Column(db.String(15), nullable=False)
+    found_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    lost_date = db.Column(db.DateTime)
+    location = db.Column(db.String(50), nullable=False)
 
+    def __repr__(self) -> str:
+        return f"{self.owner_name} - {self.item_name}"
 @app.route("/")
 def index():
     users = User.query.all()
@@ -88,9 +99,33 @@ def search():
         (User.location.ilike(f"%{query}%"))
     ).all()
     return render_template("search.html", users=users, query=query)
+@app.route("/mark_as_found/<int:id>")
+def mark_as_found(id):
+    user = User.query.get_or_404(id)
+    
+    # Add the item to the found items database
+    found_item = FoundItem(
+        item_name=user.item_name,
+        item_desc=user.item_desc,
+        owner_name=user.owner_name,
+        owner_number=user.owner_number,
+        found_date=datetime.now(timezone.utc),
+        lost_date=user.lost_date,
+        location=user.location
+    )
+    db.session.add(found_item)
+    
+    # Remove the item from the lost items database
+    db.session.delete(user)
+    db.session.commit()
+    
+    return redirect(url_for("found_items"))
 
 
-
+@app.route("/found_items")
+def found_items():
+    found_items = FoundItem.query.all()
+    return render_template("found_items.html", found_items=found_items)
 
 if __name__ == "__main__":
  # In your Flask app
