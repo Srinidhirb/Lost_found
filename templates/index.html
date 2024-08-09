@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block body %}
+  
+
+      <div class="container my-5 w-45">
+      <form action="/" method="post">
+        <h4 class="text-center">Login Form</h4>
+        <div class="mb-3 my-5">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" name="mail" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" name="pass" class="form-control" id="exampleInputPassword1">
+        </div>
+       
+        <button type="submit" class="btn btn-outline-dark">Submit</button>
+      </form>
+    </div>
+    <div class="container w-55">
+        <table class="table">
+          {% if all_users|length ==0 %}
+          <div class="alert alert-dark" role="alert">
+            No users found register 
+          </div>
+          {% else %}
+          <thead>
+            <tr>
+              <th scope="col">SNo</th>
+              <th scope="col">Name</th>
+              <th scope="col">Pass</th>
+              <th scope="col">Date</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+              {% for user in all_users %}
+              <tr>
+                  <th scope="row">{{loop.index}}</th>
+                  <td>{{user.Name}}</td>
+                  <td>{{user.ePass}}</td>
+                  <td>{{user.date}}</td>
+                  <td><a href="/delete/{{user.id}}" type="button" class="btn btn-outline-dark ">Delete</a></td>
+                  <td><a href="/update/{{user.id}}" type="button" class="btn btn-outline-dark">Update</a></td>
+              
+                </tr>
+              {% endfor %}
+           
+           
+          </tbody>
+          {% endif %}
+           
+          </table>
+    </div>
+
+    {% endblock body %}
