@@ -22,36 +22,41 @@
       <section class="lost-form">
         <h2>Report a Lost Item</h2>
         
-          <div class="form-group">
-            <label for="item-details">Item Details</label>
-            <input type="text" id="item-details" name="item_name" placeholder="Describe the lost item" /> <!-- Updated -->
-          </div>
-          <div class="form-group">
-            <label for="item-details">Item Details</label>
-            <input type="text" id="item-details" name="item_desc" placeholder="Describe the lost item" /> <!-- Updated -->
-          </div>
+        <div class="form-group">
+          <label for="item-name">Item Name</label>
+          <input type="text" id="item-name" name="item_name" required placeholder="Describe the lost item" />
+      </div>
+      
+      <div class="form-group">
+          <label for="item-desc">Item Description</label>
+          <input type="text" id="item-desc" name="item_desc" required placeholder="Describe the item" />
+      </div>
+      
+      <div class="form-group">
+        <label for="owner-name">Owner's Name</label>
+        <input type="text" id="owner-name" name="owner_name" required placeholder="Your Name" 
+               pattern="[A-Za-z ]+" 
+               title="Owner's name should only contain letters and spaces." />
+    </div>
     
-         
-    
-          <div class="form-group">
-            <label for="owner-name">Owner's Name</label>
-            <input type="text" id="owner-name" name="owner_name" placeholder="Your Name" /> <!-- Updated -->
-          </div>
-    
-          <div class="form-group">
-            <label for="owner-phone">Owner's Phone Number</label>
-            <input type="tel" id="owner-phone" name="owner_number" placeholder="Your Phone Number" /> <!-- Updated -->
-          </div>
-    
-          <div class="form-group">
-            <label for="lost-date">Lost Date</label>
-            <input type="date" id="lost-date" name="lostDate" /> <!-- No equivalent in Code 1 -->
-          </div>
-    
-          <div class="form-group">
-            <label for="location">Location</label>
-            <input type="text" id="location" name="location" placeholder="Where did you lose the item?" /> <!-- No change -->
-          </div>
+      
+      <div class="form-group">
+          <label for="owner-number">Owner's Phone Number</label>
+          <input type="tel" id="owner-number" name="owner_number" required placeholder="Your Phone Number" 
+                 pattern="\d{10}" maxlength="10" minlength="10" 
+                 title="Phone number must be exactly 10 digits." />
+      </div>
+      
+      <div class="form-group">
+          <label for="lost-date">Lost Date</label>
+          <input type="date" id="lost-date" name="lost_date"  />
+      </div>
+      
+      <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" id="location" name="location" required placeholder="Where did you lose the item?" />
+      </div>
+      
     
           <button type="submit">Submit</button>
        
